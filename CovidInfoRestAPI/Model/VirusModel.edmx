@@ -1,0 +1,542 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CovidModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Authors">
+          <Key>
+            <PropertyRef Name="AuthorId" />
+          </Key>
+          <Property Name="AuthorId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DateJoined" Type="datetime" Nullable="false" />
+          <Property Name="Token" Type="char" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Countries">
+          <Key>
+            <PropertyRef Name="CountryID" />
+          </Key>
+          <Property Name="CountryID" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="CountryName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LocalisedName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CountriesHistory">
+          <Key>
+            <PropertyRef Name="Date" />
+            <PropertyRef Name="CountryID" />
+          </Key>
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="CountryID" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime" Nullable="false" />
+          <Property Name="TotalCases" Type="int" />
+          <Property Name="NewCases" Type="int" />
+          <Property Name="TotalRecoveries" Type="int" />
+          <Property Name="NewRecoveries" Type="int" />
+          <Property Name="TotalDeaths" Type="int" />
+          <Property Name="NewDeaths" Type="int" />
+          <Property Name="TotalTests" Type="int" />
+          <Property Name="NewTests" Type="int" />
+          <Property Name="ActiveCases" Type="int" />
+        </EntityType>
+        <EntityType Name="CountryNews">
+          <Key>
+            <PropertyRef Name="NewsId" />
+          </Key>
+          <Property Name="NewsId" Type="int" Nullable="false" />
+          <Property Name="CountryId" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="AuthorId" Type="int" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime" Nullable="false" />
+          <Property Name="Topic" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="Content" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NewsTags">
+          <Key>
+            <PropertyRef Name="NewsId" />
+            <PropertyRef Name="TagId" />
+          </Key>
+          <Property Name="NewsId" Type="int" Nullable="false" />
+          <Property Name="TagId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Regions">
+          <Key>
+            <PropertyRef Name="RegionID" />
+          </Key>
+          <Property Name="RegionID" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="CountryID" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="RegionName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RegionsHistory">
+          <Key>
+            <PropertyRef Name="Date" />
+            <PropertyRef Name="RegionID" />
+          </Key>
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="RegionID" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime" Nullable="false" />
+          <Property Name="TotalCases" Type="int" />
+          <Property Name="NewCases" Type="int" />
+          <Property Name="TotalRecoveries" Type="int" />
+          <Property Name="NewRecoveries" Type="int" />
+          <Property Name="TotalDeaths" Type="int" />
+          <Property Name="NewDeaths" Type="int" />
+          <Property Name="TotalTests" Type="int" />
+          <Property Name="NewTests" Type="int" />
+          <Property Name="ActiveCases" Type="int" />
+        </EntityType>
+        <EntityType Name="Tags">
+          <Key>
+            <PropertyRef Name="TagId" />
+          </Key>
+          <Property Name="TagId" Type="int" Nullable="false" />
+          <Property Name="TagName" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__CountryNe__Autho__19DFD96B">
+          <End Role="Authors" Type="Self.Authors" Multiplicity="1" />
+          <End Role="CountryNews" Type="Self.CountryNews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Authors">
+              <PropertyRef Name="AuthorId" />
+            </Principal>
+            <Dependent Role="CountryNews">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CountryNe__Count__18EBB532">
+          <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
+          <End Role="CountryNews" Type="Self.CountryNews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Countries">
+              <PropertyRef Name="CountryID" />
+            </Principal>
+            <Dependent Role="CountryNews">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__NewsTags__NewsId__22751F6C">
+          <End Role="CountryNews" Type="Self.CountryNews" Multiplicity="1" />
+          <End Role="NewsTags" Type="Self.NewsTags" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CountryNews">
+              <PropertyRef Name="NewsId" />
+            </Principal>
+            <Dependent Role="NewsTags">
+              <PropertyRef Name="NewsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__NewsTags__TagId__236943A5">
+          <End Role="Tags" Type="Self.Tags" Multiplicity="1" />
+          <End Role="NewsTags" Type="Self.NewsTags" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tags">
+              <PropertyRef Name="TagId" />
+            </Principal>
+            <Dependent Role="NewsTags">
+              <PropertyRef Name="TagId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_country">
+          <End Role="Countries" Type="Self.Countries" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CountriesHistory" Type="Self.CountriesHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Countries">
+              <PropertyRef Name="CountryID" />
+            </Principal>
+            <Dependent Role="CountriesHistory">
+              <PropertyRef Name="CountryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_region">
+          <End Role="Regions" Type="Self.Regions" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RegionsHistory" Type="Self.RegionsHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Regions">
+              <PropertyRef Name="RegionID" />
+            </Principal>
+            <Dependent Role="RegionsHistory">
+              <PropertyRef Name="RegionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_regioncountry">
+          <End Role="Countries" Type="Self.Countries" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Regions" Type="Self.Regions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Countries">
+              <PropertyRef Name="CountryID" />
+            </Principal>
+            <Dependent Role="Regions">
+              <PropertyRef Name="CountryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CovidModelStoreContainer">
+          <EntitySet Name="Authors" EntityType="Self.Authors" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CountriesHistory" EntityType="Self.CountriesHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CountryNews" EntityType="Self.CountryNews" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NewsTags" EntityType="Self.NewsTags" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Regions" EntityType="Self.Regions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RegionsHistory" EntityType="Self.RegionsHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tags" EntityType="Self.Tags" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__CountryNe__Autho__19DFD96B" Association="Self.FK__CountryNe__Autho__19DFD96B">
+            <End Role="Authors" EntitySet="Authors" />
+            <End Role="CountryNews" EntitySet="CountryNews" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CountryNe__Count__18EBB532" Association="Self.FK__CountryNe__Count__18EBB532">
+            <End Role="Countries" EntitySet="Countries" />
+            <End Role="CountryNews" EntitySet="CountryNews" />
+          </AssociationSet>
+          <AssociationSet Name="FK__NewsTags__NewsId__22751F6C" Association="Self.FK__NewsTags__NewsId__22751F6C">
+            <End Role="CountryNews" EntitySet="CountryNews" />
+            <End Role="NewsTags" EntitySet="NewsTags" />
+          </AssociationSet>
+          <AssociationSet Name="FK__NewsTags__TagId__236943A5" Association="Self.FK__NewsTags__TagId__236943A5">
+            <End Role="Tags" EntitySet="Tags" />
+            <End Role="NewsTags" EntitySet="NewsTags" />
+          </AssociationSet>
+          <AssociationSet Name="fk_country" Association="Self.fk_country">
+            <End Role="Countries" EntitySet="Countries" />
+            <End Role="CountriesHistory" EntitySet="CountriesHistory" />
+          </AssociationSet>
+          <AssociationSet Name="fk_region" Association="Self.fk_region">
+            <End Role="Regions" EntitySet="Regions" />
+            <End Role="RegionsHistory" EntitySet="RegionsHistory" />
+          </AssociationSet>
+          <AssociationSet Name="fk_regioncountry" Association="Self.fk_regioncountry">
+            <End Role="Countries" EntitySet="Countries" />
+            <End Role="Regions" EntitySet="Regions" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CovidModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="CountryID" />
+          </Key>
+          <Property Name="CountryID" Type="String" MaxLength="4" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CountryName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LocalisedName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="CountriesHistory" Relationship="Self.fk_country" FromRole="Countries" ToRole="CountriesHistory" />
+          <NavigationProperty Name="Regions" Relationship="Self.fk_regioncountry" FromRole="Countries" ToRole="Regions" />
+          <NavigationProperty Name="CountryNews" Relationship="CovidModel.FK__CountryNe__Count__18EBB532" FromRole="Countries" ToRole="CountryNew" />
+        </EntityType>
+        <EntityType Name="CountriesHistory">
+          <Key>
+            <PropertyRef Name="Date" />
+            <PropertyRef Name="CountryID" />
+          </Key>
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CountryID" Type="String" MaxLength="4" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TotalCases" Type="Int32" />
+          <Property Name="NewCases" Type="Int32" />
+          <Property Name="TotalRecoveries" Type="Int32" />
+          <Property Name="NewRecoveries" Type="Int32" />
+          <Property Name="TotalDeaths" Type="Int32" />
+          <Property Name="NewDeaths" Type="Int32" />
+          <Property Name="TotalTests" Type="Int32" />
+          <Property Name="NewTests" Type="Int32" />
+          <Property Name="ActiveCases" Type="Int32" />
+          <NavigationProperty Name="Countries" Relationship="Self.fk_country" FromRole="CountriesHistory" ToRole="Countries" />
+        </EntityType>
+        <EntityType Name="Region">
+          <Key>
+            <PropertyRef Name="RegionID" />
+          </Key>
+          <Property Name="RegionID" Type="String" MaxLength="4" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CountryID" Type="String" MaxLength="4" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RegionName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Countries" Relationship="Self.fk_regioncountry" FromRole="Regions" ToRole="Countries" />
+          <NavigationProperty Name="RegionsHistory" Relationship="Self.fk_region" FromRole="Regions" ToRole="RegionsHistory" />
+        </EntityType>
+        <EntityType Name="RegionsHistory">
+          <Key>
+            <PropertyRef Name="Date" />
+            <PropertyRef Name="RegionID" />
+          </Key>
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="RegionID" Type="String" MaxLength="4" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TotalCases" Type="Int32" />
+          <Property Name="NewCases" Type="Int32" />
+          <Property Name="TotalRecoveries" Type="Int32" />
+          <Property Name="NewRecoveries" Type="Int32" />
+          <Property Name="TotalDeaths" Type="Int32" />
+          <Property Name="NewDeaths" Type="Int32" />
+          <Property Name="TotalTests" Type="Int32" />
+          <Property Name="NewTests" Type="Int32" />
+          <Property Name="ActiveCases" Type="Int32" />
+          <NavigationProperty Name="Regions" Relationship="Self.fk_region" FromRole="RegionsHistory" ToRole="Regions" />
+        </EntityType>
+        <Association Name="fk_country">
+          <End Role="Countries" Type="CovidModel.Country" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CountriesHistory" Type="Self.CountriesHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Countries">
+              <PropertyRef Name="CountryID" />
+            </Principal>
+            <Dependent Role="CountriesHistory">
+              <PropertyRef Name="CountryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_regioncountry">
+          <End Role="Countries" Type="CovidModel.Country" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Regions" Type="CovidModel.Region" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Countries">
+              <PropertyRef Name="CountryID" />
+            </Principal>
+            <Dependent Role="Regions">
+              <PropertyRef Name="CountryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_region">
+          <End Role="Regions" Type="CovidModel.Region" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RegionsHistory" Type="Self.RegionsHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Regions">
+              <PropertyRef Name="RegionID" />
+            </Principal>
+            <Dependent Role="RegionsHistory">
+              <PropertyRef Name="RegionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CovidContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Countries1" EntityType="CovidModel.Country" />
+          <EntitySet Name="CountriesHistory" EntityType="Self.CountriesHistory" />
+          <EntitySet Name="Regions1" EntityType="CovidModel.Region" />
+          <EntitySet Name="RegionsHistory" EntityType="Self.RegionsHistory" />
+          <AssociationSet Name="fk_country" Association="Self.fk_country">
+            <End Role="Countries" EntitySet="Countries1" />
+            <End Role="CountriesHistory" EntitySet="CountriesHistory" />
+          </AssociationSet>
+          <AssociationSet Name="fk_regioncountry" Association="Self.fk_regioncountry">
+            <End Role="Countries" EntitySet="Countries1" />
+            <End Role="Regions" EntitySet="Regions1" />
+          </AssociationSet>
+          <AssociationSet Name="fk_region" Association="Self.fk_region">
+            <End Role="Regions" EntitySet="Regions1" />
+            <End Role="RegionsHistory" EntitySet="RegionsHistory" />
+          </AssociationSet>
+          <EntitySet Name="Authors" EntityType="CovidModel.Author" />
+          <EntitySet Name="CountryNews1" EntityType="CovidModel.CountryNews" />
+          <EntitySet Name="Tags" EntityType="CovidModel.Tag" />
+          <AssociationSet Name="FK__CountryNe__Autho__19DFD96B" Association="CovidModel.FK__CountryNe__Autho__19DFD96B">
+            <End Role="Author" EntitySet="Authors" />
+            <End Role="CountryNew" EntitySet="CountryNews1" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CountryNe__Count__18EBB532" Association="CovidModel.FK__CountryNe__Count__18EBB532">
+            <End Role="Countries" EntitySet="Countries1" />
+            <End Role="CountryNew" EntitySet="CountryNews1" />
+          </AssociationSet>
+          <AssociationSet Name="NewsTags" Association="CovidModel.NewsTags">
+            <End Role="CountryNew" EntitySet="CountryNews1" />
+            <End Role="Tag" EntitySet="Tags" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Author">
+          <Key>
+            <PropertyRef Name="AuthorId" />
+          </Key>
+          <Property Name="AuthorId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DateJoined" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Token" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="CountryNews" Relationship="CovidModel.FK__CountryNe__Autho__19DFD96B" FromRole="Author" ToRole="CountryNew" />
+        </EntityType>
+        <EntityType Name="CountryNews">
+          <Key>
+            <PropertyRef Name="NewsId" />
+          </Key>
+          <Property Name="NewsId" Type="Int32" Nullable="false" />
+          <Property Name="CountryId" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="AuthorId" Type="Int32" Nullable="false" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Topic" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Author" Relationship="CovidModel.FK__CountryNe__Autho__19DFD96B" FromRole="CountryNew" ToRole="Author" />
+          <NavigationProperty Name="Country" Relationship="CovidModel.FK__CountryNe__Count__18EBB532" FromRole="CountryNew" ToRole="Countries" />
+          <NavigationProperty Name="Tags" Relationship="CovidModel.NewsTags" FromRole="CountryNew" ToRole="Tag" />
+        </EntityType>
+        <EntityType Name="Tag">
+          <Key>
+            <PropertyRef Name="TagId" />
+          </Key>
+          <Property Name="TagId" Type="Int32" Nullable="false" />
+          <Property Name="TagName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CountryNews" Relationship="CovidModel.NewsTags" FromRole="Tag" ToRole="CountryNew" />
+        </EntityType>
+        <Association Name="FK__CountryNe__Autho__19DFD96B">
+          <End Type="CovidModel.Author" Role="Author" Multiplicity="1" />
+          <End Type="CovidModel.CountryNews" Role="CountryNew" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Author">
+              <PropertyRef Name="AuthorId" />
+            </Principal>
+            <Dependent Role="CountryNew">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CountryNe__Count__18EBB532">
+          <End Type="CovidModel.Country" Role="Countries" Multiplicity="1" />
+          <End Type="CovidModel.CountryNews" Role="CountryNew" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Countries">
+              <PropertyRef Name="CountryID" />
+            </Principal>
+            <Dependent Role="CountryNew">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="NewsTags">
+          <End Type="CovidModel.CountryNews" Role="CountryNew" Multiplicity="*" />
+          <End Type="CovidModel.Tag" Role="Tag" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CovidModelStoreContainer" CdmEntityContainer="CovidContext">
+          <EntitySetMapping Name="Countries1">
+            <EntityTypeMapping TypeName="CovidModel.Country">
+              <MappingFragment StoreEntitySet="Countries">
+                <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+                <ScalarProperty Name="LocalisedName" ColumnName="LocalisedName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CountriesHistory">
+            <EntityTypeMapping TypeName="CovidModel.CountriesHistory">
+              <MappingFragment StoreEntitySet="CountriesHistory">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="TotalCases" ColumnName="TotalCases" />
+                <ScalarProperty Name="NewCases" ColumnName="NewCases" />
+                <ScalarProperty Name="TotalRecoveries" ColumnName="TotalRecoveries" />
+                <ScalarProperty Name="NewRecoveries" ColumnName="NewRecoveries" />
+                <ScalarProperty Name="TotalDeaths" ColumnName="TotalDeaths" />
+                <ScalarProperty Name="NewDeaths" ColumnName="NewDeaths" />
+                <ScalarProperty Name="TotalTests" ColumnName="TotalTests" />
+                <ScalarProperty Name="NewTests" ColumnName="NewTests" />
+                <ScalarProperty Name="ActiveCases" ColumnName="ActiveCases" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Regions1">
+            <EntityTypeMapping TypeName="CovidModel.Region">
+              <MappingFragment StoreEntitySet="Regions">
+                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+                <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+                <ScalarProperty Name="RegionName" ColumnName="RegionName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RegionsHistory">
+            <EntityTypeMapping TypeName="CovidModel.RegionsHistory">
+              <MappingFragment StoreEntitySet="RegionsHistory">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="TotalCases" ColumnName="TotalCases" />
+                <ScalarProperty Name="NewCases" ColumnName="NewCases" />
+                <ScalarProperty Name="TotalRecoveries" ColumnName="TotalRecoveries" />
+                <ScalarProperty Name="NewRecoveries" ColumnName="NewRecoveries" />
+                <ScalarProperty Name="TotalDeaths" ColumnName="TotalDeaths" />
+                <ScalarProperty Name="NewDeaths" ColumnName="NewDeaths" />
+                <ScalarProperty Name="TotalTests" ColumnName="TotalTests" />
+                <ScalarProperty Name="NewTests" ColumnName="NewTests" />
+                <ScalarProperty Name="ActiveCases" ColumnName="ActiveCases" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Authors">
+            <EntityTypeMapping TypeName="CovidModel.Author">
+              <MappingFragment StoreEntitySet="Authors">
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="DateJoined" ColumnName="DateJoined" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CountryNews1">
+            <EntityTypeMapping TypeName="CovidModel.CountryNews">
+              <MappingFragment StoreEntitySet="CountryNews">
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Topic" ColumnName="Topic" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="NewsId" ColumnName="NewsId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tags">
+            <EntityTypeMapping TypeName="CovidModel.Tag">
+              <MappingFragment StoreEntitySet="Tags">
+                <ScalarProperty Name="TagName" ColumnName="TagName" />
+                <ScalarProperty Name="TagId" ColumnName="TagId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="NewsTags" TypeName="CovidModel.NewsTags" StoreEntitySet="NewsTags">
+            <EndProperty Name="Tag">
+              <ScalarProperty Name="TagId" ColumnName="TagId" />
+            </EndProperty>
+            <EndProperty Name="CountryNew">
+              <ScalarProperty Name="NewsId" ColumnName="NewsId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

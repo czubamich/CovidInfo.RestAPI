@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30330.147
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CovidInfo_RestAPI", "CovidInfo_RestAPI.csproj", "{C28E6159-3924-4D9E-961D-743A804F1806}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CovidWPolsce_RestAPI.Tests", "..\CovidWPolsce_RestAPI.Tests\CovidWPolsce_RestAPI.Tests.csproj", "{46C6603A-CEB8-4AE4-A6EB-180149E07BFC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C28E6159-3924-4D9E-961D-743A804F1806}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C28E6159-3924-4D9E-961D-743A804F1806}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C28E6159-3924-4D9E-961D-743A804F1806}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C28E6159-3924-4D9E-961D-743A804F1806}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46C6603A-CEB8-4AE4-A6EB-180149E07BFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46C6603A-CEB8-4AE4-A6EB-180149E07BFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46C6603A-CEB8-4AE4-A6EB-180149E07BFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46C6603A-CEB8-4AE4-A6EB-180149E07BFC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5D635EB1-0F6F-4852-8476-BEF47AE6ADFF}
+	EndGlobalSection
+EndGlobal
